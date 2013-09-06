@@ -15,67 +15,68 @@ import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
  * TwitterSpout fetches messages from Twitter Streaming API using Twitter4j.
  * Created with IntelliJ IDEA.
  * User: qadeer
  * Date: 05.09.13
  * Time: 22:50
- *
  */
 public class TwitterSpout extends BaseRichSpout {
-    private String consumerKey;
-    private String consumerSecret;
-    private String accessToken;
-    private String accessTokenSecret;
-    private String username;
-    private String password;
 
+    public static final String MESSAGE = "msg";
+    private final String _accessTokenSecret;
+    private final String _accessToken;
+    private final String _consumerSecret;
+    private final String _consumerKey;
     private SpoutOutputCollector _collector;
     private TwitterStream _twitterStream;
     private LinkedBlockingQueue _msgs;
+    private FilterQuery _tweetFilterQuery;
+
 
     public TwitterSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
-        if (consumerKey==null ||
-                consumerSecret==null ||
-                accessToken ==null ||
-                accessTokenSecret == null){
+        if (consumerKey == null ||
+                consumerSecret == null ||
+                accessToken == null ||
+                accessTokenSecret == null) {
             throw new RuntimeException("Twitter4j OAuth field cannot be null");
         }
-        this.consumerKey = consumerKey;
-        this.consumerSecret = consumerSecret;
-        this.accessToken = accessToken;
-        this.accessTokenSecret = accessTokenSecret;
+
+        _consumerKey = consumerKey;
+        _consumerSecret = consumerSecret;
+        _accessToken = accessToken;
+        _accessTokenSecret = accessTokenSecret;
+
 
     }
 
-    public TwitterSpout(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public TwitterSpout(String arg, String arg1, String arg2, String arg3, FilterQuery filterQuery) {
+        this(arg,arg1,arg2,arg3);
+        _tweetFilterQuery = filterQuery;
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields("msg"));
+        outputFieldsDeclarer.declare(new Fields(MESSAGE));
     }
 
     /**
      * Creates a twitter stream listener which adds messages to a LinkedBlockingQueue.
-
      */
     @Override
     public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
         _msgs = new LinkedBlockingQueue();
         _collector = spoutOutputCollector;
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-            cb.setOAuthConsumerKey(consumerKey)
-                    .setOAuthConsumerSecret(consumerSecret)
-                    .setOAuthAccessToken(accessToken)
-                    .setOAuthAccessTokenSecret(accessTokenSecret);
-        _twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
+        ConfigurationBuilder _configurationBuilder = new ConfigurationBuilder();
+        _configurationBuilder.setOAuthConsumerKey(_consumerKey)
+                .setOAuthConsumerSecret(_consumerSecret)
+                .setOAuthAccessToken(_accessToken)
+                .setOAuthAccessTokenSecret(_accessTokenSecret);
+        _twitterStream = new TwitterStreamFactory(_configurationBuilder.build()).getInstance();
         _twitterStream.addListener(new StatusListener() {
             @Override
             public void onStatus(Status status) {
+                if (meetsConditions(status))
                     _msgs.offer(status.getText());
             }
 
@@ -104,35 +105,52 @@ public class TwitterSpout extends BaseRichSpout {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
-        _twitterStream.sample();
+        _twitterStream.filter(_tweetFilterQuery);
 
 
     }
 
+    private boolean meetsConditions(Status status) {
+        return true;
+    }
+
     /**
-     * When requested for next tuple, reads message from queue
+     * When requested for next tuple, reads message from queue and emits the message.
      */
     @Override
     public void nextTuple() {
         // emit tweets
         Object s = _msgs.poll();
-        if (s==null){
+        if (s == null) {
             Utils.sleep(1000);
-        }
-        else {
+        } else {
             _collector.emit(new Values(s));
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("twitterSpout", new TwitterSpout(args[0],args[1],args[2],args[3]),1);
+        FilterQuery filterQuery = new FilterQuery();
+        // Filter close to Norway
+        filterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
+                new double[]{18.984375,72.395706
+                }});
+
+        TwitterSpout spout = new TwitterSpout(args[0], args[1], args[2], args[3], filterQuery);
+
+        builder.setSpout("twitterSpout", spout, 1);
+        builder.setBolt("fileWriter", new FileWriterBolt(),1).shuffleGrouping("twitterSpout");
+
+
         LocalCluster cluster = new LocalCluster();
         Config conf = new Config();
         conf.setDebug(true);
         conf.setNumWorkers(2);
-        cluster.submitTopology("test",conf,builder.createTopology());
+        cluster.submitTopology("test", conf, builder.createTopology());
+        // Keep going for milliseconds
+        Utils.sleep(10000);
+        cluster.shutdown();
 
     }
 

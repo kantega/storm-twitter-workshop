@@ -10,4 +10,4 @@ To run TwitterSpout:
 3. Create a new application. If you already have one, you can use credentials from that application and skip this and the next step.
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
-6. Create a new access token at the buttom of the page. The **Access token** and **Access token secret** will be shown after a moment.
+6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
