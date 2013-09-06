@@ -1,6 +1,7 @@
 ## Quick start ##
 To run TwitterSpout: 
-``mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=TwitterSpout -Dexec.args="CONSUMER\_KEY, CONSUMER\_SECRET, ACCESS\_TOKEN, ACCESS\_TOKEN\_SECRET" ``
+``mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=TwitterSpout
+-Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ``
 ... where CONSUMER\_KEY, CONSUMER\_SECRET, ACCESS\_TOKEN, ACCESS\_TOKEN\_SECRET are values from your twitter developer account. For details see below.
 
 ## Create keys and tokens ##
