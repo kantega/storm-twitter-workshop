@@ -19,10 +19,12 @@ import java.util.Map;
 public class FileWriterBolt extends BaseRichBolt {
     PrintWriter writer;
     int count = 0;
+    private OutputCollector _collector;
 
 
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
+        _collector = outputCollector;
         try {
             writer = new PrintWriter("tweets.txt", "UTF-8");
         } catch (FileNotFoundException e) {
@@ -36,6 +38,9 @@ public class FileWriterBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple tuple) {
         writer.println((count++)+":"+tuple.getStringByField(TwitterSpout.MESSAGE));
+        // Confirm that this tuple has been treated.
+        _collector.ack(tuple);
+
     }
 
     @Override

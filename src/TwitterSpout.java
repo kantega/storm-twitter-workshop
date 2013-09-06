@@ -33,7 +33,13 @@ public class TwitterSpout extends BaseRichSpout {
     private LinkedBlockingQueue _msgs;
     private FilterQuery _tweetFilterQuery;
 
-
+    /**
+     *
+     * @param consumerKey
+     * @param consumerSecret
+     * @param accessToken
+     * @param accessTokenSecret
+     */
     public TwitterSpout(String consumerKey, String consumerSecret, String accessToken, String accessTokenSecret) {
         if (consumerKey == null ||
                 consumerSecret == null ||
@@ -50,6 +56,14 @@ public class TwitterSpout extends BaseRichSpout {
 
     }
 
+    /**
+     *  Same as first constructor, but with a filter query to filter tweets
+     * @param arg
+     * @param arg1
+     * @param arg2
+     * @param arg3
+     * @param filterQuery
+     */
     public TwitterSpout(String arg, String arg1, String arg2, String arg3, FilterQuery filterQuery) {
         this(arg,arg1,arg2,arg3);
         _tweetFilterQuery = filterQuery;
@@ -61,7 +75,7 @@ public class TwitterSpout extends BaseRichSpout {
     }
 
     /**
-     * Creates a twitter stream listener which adds messages to a LinkedBlockingQueue.
+     * Creates a twitter stream listener which adds messages to a LinkedBlockingQueue. Starts to listen to streams
      */
     @Override
     public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
@@ -105,7 +119,12 @@ public class TwitterSpout extends BaseRichSpout {
                 //To change body of implemented methods use File | Settings | File Templates.
             }
         });
-        _twitterStream.filter(_tweetFilterQuery);
+        if (_tweetFilterQuery == null) {
+            _twitterStream.sample();
+        }
+        else {
+            _twitterStream.filter(_tweetFilterQuery);
+        }
 
 
     }
@@ -125,7 +144,14 @@ public class TwitterSpout extends BaseRichSpout {
             Utils.sleep(1000);
         } else {
             _collector.emit(new Values(s));
+
         }
+    }
+
+    @Override
+    public void close() {
+        _twitterStream.shutdown();
+        super.close();
     }
 
     public static void main(String[] args) {
