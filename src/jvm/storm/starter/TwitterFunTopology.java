@@ -17,10 +17,10 @@ import storm.starter.spout.TwitterSpout;
  */
 public class TwitterFunTopology {
 
-    private static final String CONSUMER_KEY="BjlzAj4FytdrQWkQSyw83A";
-    private static final String CONSUMER_SECRET="GEmD1yTItYuCDccrWdtrfPh9rlD30OIgKXBG3rD8";
-    private static final String ACCESS_TOKEN="148681853-Nrut7bN87rxVom21bQg0MkF1DT0FJz6XLVwwvYkv";
-    private static final String ACCESS_TOKEN_SECRET="S1Thq10fYordNcLP88GlxmHXf3ResUSE5xKe3dhMgv4";
+    private static final String CONSUMER_KEY="<FILL ME INN>";
+    private static final String CONSUMER_SECRET="<FILL ME INN>";
+    private static final String ACCESS_TOKEN="<FILL ME INN>";
+    private static final String ACCESS_TOKEN_SECRET="<FILL ME INN>";
 
 
     public static void main(String[] args) throws Exception {
