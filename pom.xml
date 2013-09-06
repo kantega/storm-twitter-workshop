@@ -14,18 +14,27 @@
     </properties>
     <repositories>
         <repository>
+            <id>github-releases</id>
+            <url>http://oss.sonatype.org/content/repositories/github-releases/</url>
+        </repository>
+        <repository>
             <id>clojars.org</id>
             <url>http://clojars.org/repo</url>
         </repository>
+        <repository>
+            <id>twitter4j</id>
+            <url>http://twitter4j.org/maven2</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>storm</groupId>
             <artifactId>storm</artifactId>
-            <version>0.8.2</version>
+            <version>0.9.0-wip13</version>
             <!-- keep storm out of the jar-with-dependencies -->
-            <scope>provided</scope>
+            <!--<scope>provided</scope> -->
         </dependency>
         <dependency>
             <groupId>org.twitter4j</groupId>
@@ -37,6 +46,26 @@
             <artifactId>twitter4j-stream</artifactId>
             <version>[3.0,)</version>
         </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -44,6 +73,9 @@
         <resources>
             <resource>
                 <directory>${basedir}/multilang</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/jvm</directory>
             </resource>
         </resources>
         <plugins>

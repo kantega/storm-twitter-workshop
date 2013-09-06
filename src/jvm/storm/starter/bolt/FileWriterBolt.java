@@ -1,8 +1,11 @@
+package storm.starter.bolt;
+
 import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Tuple;
+import storm.starter.spout.TwitterSpout;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

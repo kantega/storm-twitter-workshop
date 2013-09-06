@@ -1,3 +1,6 @@
+package storm.starter.spout;
+
+import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -7,9 +10,9 @@ import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import backtype.storm.utils.Utils;
+import storm.starter.bolt.FileWriterBolt;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
-import backtype.storm.Config;
 
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -53,6 +56,11 @@ public class TwitterSpout extends BaseRichSpout {
         _accessToken = accessToken;
         _accessTokenSecret = accessTokenSecret;
 
+        _tweetFilterQuery = new FilterQuery();
+        // Filter close to Norway
+        _tweetFilterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
+                new double[]{18.984375,72.395706
+                }});
 
     }
 
@@ -154,16 +162,12 @@ public class TwitterSpout extends BaseRichSpout {
         super.close();
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
 
         TopologyBuilder builder = new TopologyBuilder();
-        FilterQuery filterQuery = new FilterQuery();
-        // Filter close to Norway
-        filterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
-                new double[]{18.984375,72.395706
-                }});
 
-        TwitterSpout spout = new TwitterSpout(args[0], args[1], args[2], args[3], filterQuery);
+
+        TwitterSpout spout = new TwitterSpout(args[0], args[1], args[2], args[3]);
 
         builder.setSpout("twitterSpout", spout, 1);
         builder.setBolt("fileWriter", new FileWriterBolt(),1).shuffleGrouping("twitterSpout");
@@ -179,5 +183,5 @@ public class TwitterSpout extends BaseRichSpout {
         cluster.shutdown();
 
     }
-
+  */
 }
