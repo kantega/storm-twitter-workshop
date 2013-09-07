@@ -12,7 +12,6 @@ import org.apache.commons.collections.buffer.BoundedFifoBuffer;
 import org.apache.commons.collections.buffer.CircularFifoBuffer;
 import org.apache.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.Iterator;
 
 

@@ -8,11 +8,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import org.apache.commons.lang.StringUtils;
-import storm.starter.spout.TwitterSpout;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -23,7 +19,7 @@ import java.util.StringTokenizer;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class FeedEntityExtractionBolt extends BaseRichBolt {
+public class HashtagExtractionBolt extends BaseRichBolt {
     private OutputCollector _collector;
 
 
@@ -35,14 +31,14 @@ public class FeedEntityExtractionBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        String text = tuple.getStringByField(TwitterSpout.MESSAGE);
+        String text = tuple.getStringByField("message");
         StringTokenizer st = new StringTokenizer(text);
 
         System.out.println("---- Split by space ------");
         while (st.hasMoreElements()) {
             String term = (String) st.nextElement();
-            if (StringUtils.startsWith(term, "@"))
-                _collector.emit(new Values(term));
+            if (StringUtils.startsWith(term, "#"))
+                _collector.emit(new Values(term, tuple.getDoubleByField("sentiment-value")));
         }
 
         // Confirm that this tuple has been treated.
@@ -52,7 +48,7 @@ public class FeedEntityExtractionBolt extends BaseRichBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields("entity"));
+        outputFieldsDeclarer.declare(new Fields("entity","sentiment"));
     }
 
     @Override
