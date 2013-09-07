@@ -9,11 +9,16 @@ import org.apache.log4j.Logger;
 
 public class PrinterBolt extends BaseBasicBolt {
 
-    private static final Logger LOG = Logger.getLogger(IntermediateRankingsBolt.class);
+    private String prefix;
+
+    public PrinterBolt(String prefix){
+        this.prefix = prefix;
+    }
+
 
     @Override
   public void execute(Tuple tuple, BasicOutputCollector collector) {
-    LOG.info("RANKING: "+tuple);
+    System.err.println(prefix+": "+tuple);
   }
 
   @Override

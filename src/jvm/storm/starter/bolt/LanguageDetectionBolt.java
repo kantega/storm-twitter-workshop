@@ -8,7 +8,8 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import org.apache.commons.lang.StringUtils;
-import storm.starter.spout.TwitterSpout;
+
+import org.apache.tika.language.*;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -19,7 +20,7 @@ import java.util.StringTokenizer;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class HashtagExtractionBolt extends BaseRichBolt {
+public class LanguageDetectionBolt extends BaseRichBolt {
     private OutputCollector _collector;
 
 
@@ -32,14 +33,13 @@ public class HashtagExtractionBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple tuple) {
         String text = tuple.getStringByField("message");
-        StringTokenizer st = new StringTokenizer(text);
 
-        System.out.println("---- Split by space ------");
-        while (st.hasMoreElements()) {
-            String term = (String) st.nextElement();
-            if (StringUtils.startsWith(term, "#"))
-                _collector.emit(new Values(term, tuple.getDoubleByField("sentiment-value")));
-        }
+        String language = "UNKNOWN";
+        LanguageIdentifier li = new LanguageIdentifier(text);
+        //if (li.isReasonablyCertain())
+            language = li.getLanguage();
+        _collector.emit(new Values(text, language));
+
 
         // Confirm that this tuple has been treated.
         _collector.ack(tuple);
@@ -48,7 +48,7 @@ public class HashtagExtractionBolt extends BaseRichBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields("entity","sentiment"));
+        outputFieldsDeclarer.declare(new Fields("message","language"));
     }
 
     @Override

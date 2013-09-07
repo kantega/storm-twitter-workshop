@@ -7,6 +7,7 @@ import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
 import storm.starter.bolt.*;
 import storm.starter.spout.TwitterSpout;
+import twitter4j.FilterQuery;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,14 +28,22 @@ public class TwitterFunTopology {
 
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("spout", new TwitterSpout(CONSUMER_KEY,CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET), 1);
+        FilterQuery tweetFilterQuery = new FilterQuery();
+        // Filter close to Norway
+        tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
+        builder.setSpout("spout", new TwitterSpout(CONSUMER_KEY,CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET,tweetFilterQuery), 1);
+        builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
 
-        builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("spout");
+        builder.setBolt("sentiment", new SentimentBolt(), 4).shuffleGrouping("language-detection");
+        builder.setBolt("avg-sentiment", new AverageWindowBolt("sentiment-value"), 4).shuffleGrouping("sentiment");
+        builder.setBolt("avg-sentiment-print", new PrinterBolt("AVG SENTIMENT")).shuffleGrouping("avg-sentiment");
+
+        builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("sentiment");
         builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
         builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields(
                 "obj"));
         builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
-        builder.setBolt("hashtag-ranking-print", new PrinterBolt()).shuffleGrouping("hashtag-total-ranking");
+        builder.setBolt("hashtag-ranking-print", new PrinterBolt("HASHTAG_RANKING")).shuffleGrouping("hashtag-total-ranking");
 
 
  /*       builder.setBolt("feeds", new FeedEntityExtractionBolt(), 4).shuffleGrouping("spout");

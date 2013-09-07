@@ -26,7 +26,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class TwitterSpout extends BaseRichSpout {
 
-    public static final String MESSAGE = "msg";
+    public static final String MESSAGE = "message";
     private final String _accessTokenSecret;
     private final String _accessToken;
     private final String _consumerSecret;
@@ -162,26 +162,4 @@ public class TwitterSpout extends BaseRichSpout {
         super.close();
     }
 
-/*    public static void main(String[] args) {
-
-        TopologyBuilder builder = new TopologyBuilder();
-
-
-        TwitterSpout spout = new TwitterSpout(args[0], args[1], args[2], args[3]);
-
-        builder.setSpout("twitterSpout", spout, 1);
-        builder.setBolt("fileWriter", new FileWriterBolt(),1).shuffleGrouping("twitterSpout");
-
-
-        LocalCluster cluster = new LocalCluster();
-        Config conf = new Config();
-        conf.setDebug(true);
-        conf.setNumWorkers(2);
-        cluster.submitTopology("test", conf, builder.createTopology());
-        // Keep going for milliseconds
-        Utils.sleep(10000);
-        cluster.shutdown();
-
-    }
-  */
 }
