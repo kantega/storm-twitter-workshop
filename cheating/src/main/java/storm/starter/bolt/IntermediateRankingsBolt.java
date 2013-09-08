@@ -1,6 +1,7 @@
 package storm.starter.bolt;
 
 import backtype.storm.tuple.Tuple;
+import storm.starter.bolt.*;
 import org.apache.log4j.Logger;
 import storm.starter.tools.Rankable;
 import storm.starter.tools.RankableObjectWithFields;
@@ -11,7 +12,7 @@ import storm.starter.tools.RankableObjectWithFields;
  * It assumes the input tuples to adhere to the following format: (object, object_count, additionalField1,
  * additionalField2, ..., additionalFieldN).
  */
-public final class IntermediateRankingsBolt extends AbstractRankerBolt {
+public final class IntermediateRankingsBolt extends storm.starter.bolt.AbstractRankerBolt {
 
   private static final long serialVersionUID = -1369800530256637409L;
   private static final Logger LOG = Logger.getLogger(IntermediateRankingsBolt.class);

@@ -4,8 +4,7 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.tuple.Fields;
-import storm.starter.bolt.*;
+import storm.starter.bolt.PrinterBolt;
 import storm.starter.spout.TwitterSpout;
 import twitter4j.FilterQuery;
 
@@ -18,13 +17,29 @@ import twitter4j.FilterQuery;
  */
 public class TwitterFunTopology {
 
-    private static final String CONSUMER_KEY="<FILL ME INN>";
-    private static final String CONSUMER_SECRET="<FILL ME INN>";
-    private static final String ACCESS_TOKEN="<FILL ME INN>";
-    private static final String ACCESS_TOKEN_SECRET="<FILL ME INN>";
+    private static String consumerKey = "FILL IN HERE";
+    private static String consumerSecret = "FILL IN HERE";
+    private static String accessToken = "FILL IN HERE";
+    private static String accessTokenKey = "FILL IN HERE";
 
 
     public static void main(String[] args) throws Exception {
+        /**************** SETUP ****************/
+        String remoteClusterTopologyName = null;
+        if (args!=null) {
+            if (args.length==1) {
+                remoteClusterTopologyName = args[0];
+            }
+            // If credentials are provided as commandline arguments
+            else if (args.length==4) {
+                consumerKey =args[0];
+                consumerSecret =args[1];
+                accessToken =args[2];
+                accessTokenKey =args[3];
+            }
+
+        }
+        /****************       ****************/
 
         TopologyBuilder builder = new TopologyBuilder();
 
@@ -32,7 +47,8 @@ public class TwitterFunTopology {
         // TODO: Define your own twitter query
         //tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
 
-        TwitterSpout spout = new TwitterSpout(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, tweetFilterQuery);
+
+        TwitterSpout spout = new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenKey, tweetFilterQuery);
 
         //TODO: Set the twitter spout as spout on this topology. Hint: Use the builder object.
 
@@ -44,10 +60,10 @@ public class TwitterFunTopology {
         conf.setDebug(true);
 
 
-        if (args != null && args.length > 0) {
+        if (remoteClusterTopologyName!=null) {
             conf.setNumWorkers(3);
 
-            StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
+            StormSubmitter.submitTopology(remoteClusterTopologyName, conf, builder.createTopology());
         }
         else {
             conf.setMaxTaskParallelism(3);

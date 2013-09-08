@@ -1,5 +1,7 @@
 package storm.starter.tools;
 
+import storm.starter.tools.*;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -52,7 +54,7 @@ public final class SlidingWindowCounter<T> implements Serializable {
 
   private static final long serialVersionUID = -2645063988768785810L;
 
-  private SlotBasedCounter<T> objCounter;
+  private storm.starter.tools.SlotBasedCounter<T> objCounter;
   private int headSlot;
   private int tailSlot;
   private int windowLengthInSlots;
@@ -63,7 +65,7 @@ public final class SlidingWindowCounter<T> implements Serializable {
           "Window length in slots must be at least two (you requested " + windowLengthInSlots + ")");
     }
     this.windowLengthInSlots = windowLengthInSlots;
-    this.objCounter = new SlotBasedCounter<T>(this.windowLengthInSlots);
+    this.objCounter = new storm.starter.tools.SlotBasedCounter<T>(this.windowLengthInSlots);
 
     this.headSlot = 0;
     this.tailSlot = slotAfter(headSlot);

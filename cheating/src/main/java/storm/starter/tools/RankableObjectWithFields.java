@@ -39,7 +39,7 @@ public class RankableObjectWithFields implements Rankable, Serializable {
    * <p/>
    * This method expects the object to be ranked in the first field (index 0) of the provided tuple, and the number of
    * occurrences of the object (its count) in the second field (index 1). Any further fields in the tuple will be
-   * extracted and tracked, too. These fields can be accessed via {@link jvm.storm.starter.tools.RankableObjectWithFields#getFields()}.
+   * extracted and tracked, too. These fields can be accessed via {@link jvmstorm.starter.tools.RankableObjectWithFields#getFields()}.
    *
    * @param tuple
    *

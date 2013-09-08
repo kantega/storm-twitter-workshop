@@ -18,20 +18,42 @@ import twitter4j.FilterQuery;
  */
 public class TwitterFunTopology {
 
-    private static final String CONSUMER_KEY="<FILL ME INN>";
-    private static final String CONSUMER_SECRET="<FILL ME INN>";
-    private static final String ACCESS_TOKEN="<FILL ME INN>";
-    private static final String ACCESS_TOKEN_SECRET="<FILL ME INN>";
+
+    private static String consumerKey = "FILL IN HERE";
+    private static String consumerSecret = "FILL IN HERE";
+    private static String accessToken = "FILL IN HERE";
+    private static String accessTokenKey = "FILL IN HERE";
 
 
     public static void main(String[] args) throws Exception {
+
+        /**************** SETUP ****************/
+        String remoteClusterTopologyName = null;
+        if (args!=null) {
+            if (args.length==1) {
+                remoteClusterTopologyName = args[0];
+            }
+            // If credentials are provided as commandline arguments
+            else if (args.length==4) {
+                consumerKey =args[0];
+                consumerSecret =args[1];
+                accessToken =args[2];
+                accessTokenKey =args[3];
+            }
+
+        }
+        /****************       ****************/
 
         TopologyBuilder builder = new TopologyBuilder();
 
         FilterQuery tweetFilterQuery = new FilterQuery();
         // Filter close to Norway
+       tweetFilterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
+                new double[]{18.984375,72.395706
+                }});
+
         tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
-        builder.setSpout("spout", new TwitterSpout(CONSUMER_KEY,CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET,tweetFilterQuery), 1);
+        builder.setSpout("spout", new TwitterSpout(consumerKey,consumerSecret, accessToken, accessTokenKey,tweetFilterQuery), 1);
         builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
 
         builder.setBolt("sentiment", new SentimentBolt(), 4).shuffleGrouping("language-detection");
@@ -59,7 +81,7 @@ public class TwitterFunTopology {
         conf.setDebug(true);
 
 
-        if (args != null && args.length > 0) {
+        if (remoteClusterTopologyName!=null) {
             conf.setNumWorkers(3);
 
             StormSubmitter.submitTopology(args[0], conf, builder.createTopology());

@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * This abstract bolt provides the basic behavior of bolts that rank objects according to their count.
  * <p/>
- * It uses a template method design pattern for {@link jvm.storm.starter.bolt.AbstractRankerBolt#execute(backtype.storm.tuple.Tuple, backtype.storm.topology.BasicOutputCollector)} to allow
+ * It uses a template method design pattern for {@link jvmstorm.starter.bolt.AbstractRankerBolt#execute(backtype.storm.tuple.Tuple, backtype.storm.topology.BasicOutputCollector)} to allow
  * actual bolt implementations to specify how incoming tuples are processed, i.e. how the objects embedded within those
  * tuples are retrieved and counted.
  */
