@@ -18,8 +18,10 @@
 **OR** send them as command line arguments through maven by adding the following in step 8
          -Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" 
 8. Test your credentials by running the main class in cheating
-         cd cheating   
-         mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
+
+        cd cheating   
+        mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
+        
 9. You should now get continious output and no errors
 
 ## STEP TWO ##
