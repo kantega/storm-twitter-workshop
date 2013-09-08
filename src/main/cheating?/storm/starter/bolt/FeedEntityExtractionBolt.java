@@ -8,6 +8,7 @@ import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
 import backtype.storm.tuple.Values;
 import org.apache.commons.lang.StringUtils;
+import storm.starter.spout.TwitterSpout;
 
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -19,7 +20,7 @@ import java.util.StringTokenizer;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class HashtagExtractionBolt extends BaseRichBolt {
+public class FeedEntityExtractionBolt extends BaseRichBolt {
     private OutputCollector _collector;
 
 
@@ -31,14 +32,14 @@ public class HashtagExtractionBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        String text = tuple.getStringByField("message");
+        String text = tuple.getStringByField(TwitterSpout.MESSAGE);
         StringTokenizer st = new StringTokenizer(text);
 
         System.out.println("---- Split by space ------");
         while (st.hasMoreElements()) {
-
-            //TODO emit hashtags
-
+            String term = (String) st.nextElement();
+            if (StringUtils.startsWith(term, "@"))
+                _collector.emit(new Values(term));
         }
 
         // Confirm that this tuple has been treated.

@@ -34,16 +34,19 @@ public class LanguageDetectionBolt extends BaseRichBolt {
     public void execute(Tuple tuple) {
         String text = tuple.getStringByField("message");
 
+        String language = detectLanguage(text);
+        //TODO Emit both the incoming text and the detected language
+
+        //TODO Confirm that this tuple has been treated.
+
+    }
+
+    private String detectLanguage(String text) {
         String language = "UNKNOWN";
         LanguageIdentifier li = new LanguageIdentifier(text);
         //if (li.isReasonablyCertain())
-            language = li.getLanguage();
-        _collector.emit(new Values(text, language));
-
-
-        // Confirm that this tuple has been treated.
-        _collector.ack(tuple);
-
+        language = li.getLanguage();
+        return language;
     }
 
     @Override
@@ -51,9 +54,4 @@ public class LanguageDetectionBolt extends BaseRichBolt {
         outputFieldsDeclarer.declare(new Fields("message","language"));
     }
 
-    @Override
-    public void cleanup() {
-        super.cleanup();
-
-    }
 }

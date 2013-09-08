@@ -29,30 +29,15 @@ public class TwitterFunTopology {
         TopologyBuilder builder = new TopologyBuilder();
 
         FilterQuery tweetFilterQuery = new FilterQuery();
-        // Filter close to Norway
-        tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
-        builder.setSpout("spout", new TwitterSpout(CONSUMER_KEY,CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET,tweetFilterQuery), 1);
-        builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
+        // TODO: Define your own twitter query
+        //tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
 
-        builder.setBolt("sentiment", new SentimentBolt(), 4).shuffleGrouping("language-detection");
-        builder.setBolt("avg-sentiment", new AverageWindowBolt("sentiment-value"), 4).shuffleGrouping("sentiment");
-        builder.setBolt("avg-sentiment-print", new PrinterBolt("AVG SENTIMENT")).shuffleGrouping("avg-sentiment");
+        TwitterSpout spout = new TwitterSpout(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET, tweetFilterQuery);
 
-        builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("sentiment");
-        builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
-        builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields(
-                "obj"));
-        builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
-        builder.setBolt("hashtag-ranking-print", new PrinterBolt("HASHTAG_RANKING")).shuffleGrouping("hashtag-total-ranking");
+        //TODO: Set the twitter spout as spout on this topology. Hint: Use the builder object.
 
-
- /*       builder.setBolt("feeds", new FeedEntityExtractionBolt(), 4).shuffleGrouping("spout");
-        builder.setBolt("feed-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("feeds", new Fields("entity"));
-        builder.setBolt("feed-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("feed-counter", new Fields(
-                "obj"));
-        builder.setBolt("feed-total-ranking", new TotalRankingsBolt(100)).globalGrouping("feed-intermediate-ranking");
-   */
-
+        PrinterBolt printerBolt = new PrinterBolt("TWEET! ");
+        //TODO: Route messages from the spout to the printer bolt. Hint: Again, use the builder object.
 
 
         Config conf = new Config();

@@ -36,9 +36,9 @@ public class HashtagExtractionBolt extends BaseRichBolt {
 
         System.out.println("---- Split by space ------");
         while (st.hasMoreElements()) {
-
-            //TODO emit hashtags
-
+            String term = (String) st.nextElement();
+            if (StringUtils.startsWith(term, "#"))
+                _collector.emit(new Values(term, tuple.getDoubleByField("sentiment-value")));
         }
 
         // Confirm that this tuple has been treated.
@@ -48,7 +48,7 @@ public class HashtagExtractionBolt extends BaseRichBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields("entity"));
+        outputFieldsDeclarer.declare(new Fields("entity","sentiment"));
     }
 
     @Override

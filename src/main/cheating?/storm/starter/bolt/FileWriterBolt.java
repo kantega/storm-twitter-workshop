@@ -4,13 +4,13 @@ import backtype.storm.task.OutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
-import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Tuple;
-import backtype.storm.tuple.Values;
-import org.apache.commons.lang.StringUtils;
+import storm.starter.spout.TwitterSpout;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,28 +19,28 @@ import java.util.StringTokenizer;
  * Time: 16:38
  * To change this template use File | Settings | File Templates.
  */
-public class HashtagExtractionBolt extends BaseRichBolt {
+public class FileWriterBolt extends BaseRichBolt {
+    PrintWriter writer;
+    int count = 0;
     private OutputCollector _collector;
 
 
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         _collector = outputCollector;
+        try {
+            writer = new PrintWriter("tweets.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
     }
 
     @Override
     public void execute(Tuple tuple) {
-        String text = tuple.getStringByField("message");
-        StringTokenizer st = new StringTokenizer(text);
-
-        System.out.println("---- Split by space ------");
-        while (st.hasMoreElements()) {
-
-            //TODO emit hashtags
-
-        }
-
+        writer.println((count++)+":"+tuple.getStringByField(TwitterSpout.MESSAGE));
         // Confirm that this tuple has been treated.
         _collector.ack(tuple);
 
@@ -48,11 +48,12 @@ public class HashtagExtractionBolt extends BaseRichBolt {
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        outputFieldsDeclarer.declare(new Fields("entity"));
+
     }
 
     @Override
     public void cleanup() {
+        writer.close();
         super.cleanup();
 
     }

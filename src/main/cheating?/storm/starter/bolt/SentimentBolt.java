@@ -26,64 +26,6 @@ public class SentimentBolt extends BaseRichBolt {
     private static final Logger LOG = Logger.getLogger(SentimentBolt.class);
 
 
-
-    private Map<String, Integer> sentiments = new HashMap<String, Integer>();
-
-
-    @Override
-    public void execute(Tuple tuple) {
-        //TODO make use of the language information. If the language is norwegian ("no"), we calculate the sentiment value
-        String language = "?";
-        String text = "?";
-
-        if (StringUtils.equals(language, "no")) {
-            double sentimentValue = calculateSentimentValue(text);
-
-            //TODO Emit both the text and its sentimentValue
-        }
-        // Confirm that this tuple has been treated.
-        _collector.ack(tuple);
-
-    }
-
-
-    /**
-     * Calculating the sentiment value for a given text
-     * @param text
-     * @return
-     */
-    private double calculateSentimentValue(String text) {
-        StringTokenizer st = new StringTokenizer(text);
-
-        int numberOfSentiments = 0;
-        int sum = 0;
-        while (st.hasMoreElements()) {
-            String term = (String) st.nextElement();
-
-            if (sentiments.containsKey(term)) {
-                numberOfSentiments++;
-                sum += sentiments.get(term);
-            }
-        }
-
-        double sentimentValue = 0;
-        if (numberOfSentiments > 0)
-            sentimentValue = sum / numberOfSentiments;
-        return sentimentValue;
-    }
-
-    @Override
-    public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
-        //TODO Declare your output fields
-    }
-
-    @Override
-    public void cleanup() {
-        super.cleanup();
-
-    }
-
-
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         _collector = outputCollector;
@@ -1651,4 +1593,47 @@ public class SentimentBolt extends BaseRichBolt {
 
     }
 
+    private Map<String, Integer> sentiments = new HashMap<String, Integer>();
+
+
+    @Override
+    public void execute(Tuple tuple) {
+        String text = tuple.getStringByField("message");
+        String language = tuple.getStringByField("language");
+        if (StringUtils.equals(language, "no")) {
+            StringTokenizer st = new StringTokenizer(text);
+
+            System.out.println("---- Split by space ------");
+            int numberOfSentiments = 0;
+            int sum = 0;
+            while (st.hasMoreElements()) {
+                String term = (String) st.nextElement();
+
+                if (sentiments.containsKey(term)) {
+                    numberOfSentiments++;
+                    sum += sentiments.get(term);
+                }
+            }
+
+            double sentimentValue = 0;
+            if (numberOfSentiments > 0)
+                sentimentValue = sum / numberOfSentiments;
+
+            _collector.emit(new Values(text, sentimentValue));
+        }
+        // Confirm that this tuple has been treated.
+        _collector.ack(tuple);
+
+    }
+
+    @Override
+    public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+        outputFieldsDeclarer.declare(new Fields("message", "sentiment-value"));
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+
+    }
 }
