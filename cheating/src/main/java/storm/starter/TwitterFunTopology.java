@@ -51,8 +51,9 @@ public class TwitterFunTopology {
        tweetFilterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
                 new double[]{18.984375,72.395706
                 }});
-
+        // Filter on hashtags
         tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
+
         builder.setSpout("spout", new TwitterSpout(consumerKey,consumerSecret, accessToken, accessTokenKey,tweetFilterQuery), 1);
         builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
 

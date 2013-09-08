@@ -1,4 +1,8 @@
-
+## Requirements ##
+* Apache Maven 3.x
+* JVM 6 or 7 
+* Internet connection for downloading maven dependencies and reading documentation
+* Recommended: IntelliJ IDEA 
 
 ## STEP ONE ##
 ### Twitter Developer: Create keys and tokens
@@ -8,10 +12,17 @@
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
 6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
-7. Either add these tokens to the TwitterFunTopology class or send them as arguments through maven by using 
-``-Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ``
-8. Test your credentials by running the main class ``mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
-
+7. Add these tokens to  
+` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
+` cheating / src / main / java / storm / starter / TwitterFunTopology.java` 
+**OR** send them as command line arguments through maven by adding the following in step 8
+```-Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ```
+8. Test your credentials by running the main class in cheating
+```
+cd cheating  
+mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
+```
+9. You should now get continious output and no errors
 
 ## STEP TWO ##
 ### Storm: My first topology
@@ -22,9 +33,9 @@ Goal: Print out tweets
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
-Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt.
-Hint: Take a look at [FilterQuery](todo), however, note that the language feature is not yet implementet by Twitter4j. 
-Still stuck? Take a look at [How to filter Twitter streams](todo) for examples. 
+Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt.  
+Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature is not yet implementet by Twitter4j.  
+Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j). 
 
 ## STEP FOUR ##
 ### Storm: Rank the 10 most popular hashtags

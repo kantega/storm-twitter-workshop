@@ -52,12 +52,6 @@ public class TwitterSpout extends BaseRichSpout {
         _accessToken = accessToken;
         _accessTokenSecret = accessTokenSecret;
 
-        _tweetFilterQuery = new FilterQuery();
-        // Filter close to Norway
-        _tweetFilterQuery.locations(new double[][]{new double[]{3.339844, 53.644638},
-                new double[]{18.984375,72.395706
-                }});
-
     }
 
     /**
