@@ -28,8 +28,7 @@ mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.start
 ### Storm: My first topology
 Goal: Print out tweets
 1. Define your Twitter query (location and topic based)
-2. Build a topology that use your twitter query and routes the twitter messages to the PrinterBolt
-
+2. Build a topology that use your twitter query and routes the twitter messages to the PrinterBolt (Replace the todo's with implementations).
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
@@ -38,19 +37,32 @@ Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-work
 Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j). 
 
 ## STEP FOUR ##
-### Storm: Rank the 10 most popular hashtags
-Problem: How do we create such ranking if we do not store every event or hashtag?
+### Storm: Count the popularity of hashtags
+Goal: Build a topology that counts occurrences of the hashtags.
+Hint: We do this by introducing a new bolt; the RollingCountBolt.
 
 ## STEP FIVE ##
+### Storm: Rank the 10 most popular hashtags continuously
+Goal: Show what people are discussing right now.
+Problem: How do we create such ranking if we do not store every event or hashtag?
+Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and the TotalRankingsBolt.
+
+## STEP SIX ##
 ### Storm: Extracting sentiment values
 Sentiment values are numerical measures of how positive or negative a given text is. By extracting sentiment values from tweets we can chart how positive people are to certain entities.
 A common approach for extracting sentiment values is to apply dictionaries where different words are assosiated  with a sentiment value. Such dictionaries are customized for each language.
 Goal: Extract the sentiment value for each of the tweets in your stream
 To accomplish this task we need a topology with a bolt for language detection and a bolt for extracting the sentiment value.
 
-## STEP SIX ##
+## STEP SEVEN ##
+### Storm: Calculate a running average value for sentiment
+Goal: Calculate a running average sentiment value for the last 50 tweets
+To accomplish this will add the bolt to our topology: AverageWindowBolt.
+
+## STEP EIGHT ##
 ### Storm: Its your playground!
 Be creative - Form new twitter queries, create new bolts, combine them and extract knowledge!
 For example:
 * Find out where people are most happy, Oslo, Trondheim, Stavanger or Bergen?
-* How happy are people about the weather?
+* How happy are people about the weather, the public transport, etc.?
+* Who is most popular: Jens Stoltenberg or Erna Solberg? What are their associated sentiment values?

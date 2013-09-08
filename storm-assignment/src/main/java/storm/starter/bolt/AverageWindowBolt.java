@@ -15,16 +15,25 @@ import org.apache.log4j.Logger;
 import java.util.Iterator;
 
 
+/**
+ * Bolt calculating a running average value.
+ */
 public class AverageWindowBolt extends BaseBasicBolt {
 
     private static final Logger LOG = Logger.getLogger(AverageWindowBolt.class);
-    private static final int WINDOW_SIZE = 50;
-    Buffer fifo = new CircularFifoBuffer(WINDOW_SIZE);
+
     double avgValue = 0d;
     private String field;
+    private CircularFifoBuffer fifo;
 
-    public AverageWindowBolt(String field){
+    /**
+     * Constructor
+     * @param field The tuple field from which the average value should be calculated
+     * @param windowSize Limit for how many items the average value should be based on.
+     */
+    public AverageWindowBolt(String field, int windowSize){
         this.field = field;
+        this.fifo = new CircularFifoBuffer(windowSize);
     }
 
 
