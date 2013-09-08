@@ -1,8 +1,4 @@
-## Quick start ##
-To run TwitterSpout: 
-``mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=TwitterSpout
--Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ``
-... where CONSUMER\_KEY, CONSUMER\_SECRET, ACCESS\_TOKEN, ACCESS\_TOKEN\_SECRET are values from your twitter developer account. For details see below.
+
 
 ## STEP ONE ##
 ### Twitter Developer: Create keys and tokens
@@ -12,6 +8,10 @@ To run TwitterSpout:
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
 6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
+7. Either add these tokens to the TwitterFunTopology class or send them as arguments through maven by using 
+``-Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ``
+8. Test your credentials by running the main class ``mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
+
 
 ## STEP TWO ##
 ### Storm: My first topology
@@ -23,7 +23,8 @@ Goal: Print out tweets
 ## STEP THREE ##
 ### Storm: Extracting hashtags
 Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt.
-
+Hint: Take a look at [FilterQuery](todo), however, note that the language feature is not yet implementet by Twitter4j. 
+Still stuck? Take a look at [How to filter Twitter streams](todo) for examples. 
 
 ## STEP FOUR ##
 ### Storm: Rank the 10 most popular hashtags
