@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Time: 20:49
  * To change this template use File | Settings | File Templates.
  */
-public class TwitterFunTopology {
+public class CheatingTwitterFunTopology {
 
 
     private static String consumerKey = "FILL IN HERE";

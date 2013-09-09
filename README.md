@@ -32,7 +32,7 @@
 8. Test your credentials by running the main class in cheating
 
         cd cheating   
-        mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
+        mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.CheatingTwitterFunTopology
         
 9. You should now start getting continuous output for 10 seconds. After this a file tweet.txt should have been generated that contains some twitter messages. If this file is empty, look at console output. 
 
