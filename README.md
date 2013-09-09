@@ -2,9 +2,16 @@
 * Apache Maven 3.x
 * JVM 6 or 7 
 * Internet connection for downloading maven dependencies and reading documentation
-* Recommended: IntelliJ IDEA 
+* IDE (Recommended: IntelliJ IDEA)
 
 ## STEP ONE ##
+### Download workshop projects
+1. git clone https://github.com/kantega/storm-twitter-workshop
+
+### For Eclipse-users only
+1. Create Eclipse projects by running the "mvn eclipse:eclipse" command from the two sub project directories ("cheating" and "storm-assignment").
+2. Import these projects into Eclipse.
+
 ### Twitter Developer: Create keys and tokens
 1. Go to [Twitter developer site](https://dev.twitter.com) and log in. Create new account if you do not already have one
 2. Click on the arrow on top right beside your account image and select "My applications".
@@ -12,7 +19,7 @@
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
 6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
-7. Add these tokens to  
+7. Add these tokens to
 ` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
 ` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
 **OR** send them as command line arguments through maven by adding the following in step 8
@@ -22,7 +29,7 @@
         cd cheating   
         mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
         
-9. You should now get continious output and no errors
+9. You should now get continuous output and no errors
 
 ## STEP TWO ##
 ### Storm: My first topology
@@ -46,6 +53,11 @@ Hint: We do this by introducing a new bolt; the RollingCountBolt.
 Goal: Show what people are discussing right now.
 Problem: How do we create such ranking if we do not store every event or hashtag?
 Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and the TotalRankingsBolt.
+Information about how these bolts work: http://www.michael-noll.com/blog/2013/01/18/implementing-real-time-trending-topics-in-storm/
+New concept:
+    Sliding Windows - Time or size based frame for calculation objects
+    Tick tuples - When we require a bolt to “do something” at a fixed interval
+
 
 ## STEP SIX ##
 ### Storm: Extracting sentiment values
