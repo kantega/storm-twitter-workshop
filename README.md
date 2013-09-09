@@ -4,6 +4,10 @@
 * Internet connection for downloading maven dependencies and reading documentation
 * IDE (Recommended: IntelliJ IDEA)
 
+## General Info ##
+* The folder cheating contains the entire solution, while the folder storm-assignment is the working directory for this workshop.
+
+
 ## STEP ONE ##
 ### Download workshop projects
 1. git clone https://github.com/kantega/storm-twitter-workshop
@@ -20,9 +24,9 @@
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
 6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
-7. Add these tokens to
-` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
-` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
+7. Add these tokens to BOTH
+* ` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
+* ` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
 **OR** send them as command line arguments through maven by adding the following in step 8
 ``` -Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ```
 8. Test your credentials by running the main class in cheating
@@ -32,11 +36,13 @@
         
 9. You should now start getting continuous output for 10 seconds. After this a file tweet.txt should have been generated that contains some twitter messages. If this file is empty, look at console output. 
 
+Now, you are ready for coding. To the below steps on the storm-assignment folder and fill out the TODOs. 
+
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). Run the main method in TwitterFunTopology.java.
-2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See our (Github wiki)[https://github.com/kantega/storm-twitter-workshop/wiki]. Run the main method in TwitterFunTopology.java.
+2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).
 TODO: VIS EN EKSEMPEL TOPOLOGI
 TODO: Forklar boundingbox for location queries.
 
