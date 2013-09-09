@@ -9,7 +9,7 @@
 1. git clone https://github.com/kantega/storm-twitter-workshop
 
 ### For Eclipse-users only
-1. Create Eclipse projects by running the "mvn eclipse:eclipse" command from the two sub project directories ("cheating" and "storm-assignment").
+1. Create Eclipse projects by running the "mvn eclipse:eclipse" command from the project root ("storm-twitter-workshop")
 2. Import these projects into Eclipse.
 
 ### Twitter Developer: Create keys and tokens

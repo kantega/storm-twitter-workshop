@@ -55,6 +55,5 @@ public class FileWriterBolt extends BaseRichBolt {
     public void cleanup() {
         writer.close();
         super.cleanup();
-
     }
 }
