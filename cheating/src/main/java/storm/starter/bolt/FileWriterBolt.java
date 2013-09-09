@@ -24,12 +24,17 @@ public class FileWriterBolt extends BaseRichBolt {
     int count = 0;
     private OutputCollector _collector;
 
+    private String filename;
+
+    public FileWriterBolt(String filename){
+        this.filename = filename;
+    }
 
     @Override
     public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
         _collector = outputCollector;
         try {
-            writer = new PrintWriter("tweets.txt", "UTF-8");
+            writer = new PrintWriter(filename, "UTF-8");
         } catch (FileNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (UnsupportedEncodingException e) {

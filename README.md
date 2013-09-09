@@ -23,7 +23,7 @@
 ` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
 ` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
 **OR** send them as command line arguments through maven by adding the following in step 8
-         -Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" 
+``` -Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ```
 8. Test your credentials by running the main class in cheating
 
         cd cheating   
@@ -34,41 +34,44 @@
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets
-1. Define your Twitter query (location and topic based)
-2. Build a topology that use your twitter query and routes the twitter messages to the PrinterBolt (Replace the todo's with implementations).
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based)
+2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
-Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt.  
+Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt (HashtagExtractionBolt). (Replace the todo's with implementations).  Print the hashtags to a FileWriterBolt.
 Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature is not yet implementet by Twitter4j.  
-Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j). 
+Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j).
+Bonus task: How to eliminate Swedish tweets? Hint make use of the language detection bolt.
 
 ## STEP FOUR ##
 ### Storm: Count the popularity of hashtags
 Goal: Build a topology that counts occurrences of the hashtags.
 Hint: We do this by introducing a new bolt; the RollingCountBolt.
+Print the results to a FileWriterBolt.
+New concept:
+    Sliding Windows - Time or size based frame for calculation objects
 
 ## STEP FIVE ##
 ### Storm: Rank the 10 most popular hashtags continuously
-Goal: Show what people are discussing right now.
+Goal: Show what people are discussing right now. Print a top 10 of the most popular hashtags to a FileWriterBolt.
 Problem: How do we create such ranking if we do not store every event or hashtag?
 Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and the TotalRankingsBolt.
 Information about how these bolts work: http://www.michael-noll.com/blog/2013/01/18/implementing-real-time-trending-topics-in-storm/
 New concept:
-    Sliding Windows - Time or size based frame for calculation objects
     Tick tuples - When we require a bolt to “do something” at a fixed interval
 
 
 ## STEP SIX ##
 ### Storm: Extracting sentiment values
 Sentiment values are numerical measures of how positive or negative a given text is. By extracting sentiment values from tweets we can chart how positive people are to certain entities.
-A common approach for extracting sentiment values is to apply dictionaries where different words are assosiated  with a sentiment value. Such dictionaries are customized for each language.
-Goal: Extract the sentiment value for each of the tweets in your stream
+A common approach for extracting sentiment values is to apply dictionaries where different words are associated  with a sentiment value. Such dictionaries are customized for each language.
+Goal: Extract the sentiment value for each of the tweets in your stream. Print the sentiment value to a FileWriterBolt.
 To accomplish this task we need a topology with a bolt for language detection and a bolt for extracting the sentiment value.
 
 ## STEP SEVEN ##
 ### Storm: Calculate a running average value for sentiment
-Goal: Calculate a running average sentiment value for the last 50 tweets
+Goal: Calculate a running average sentiment value for the last 50 tweets. Print the average sentiment value to a FileWriterBolt.
 To accomplish this will add the bolt to our topology: AverageWindowBolt.
 
 ## STEP EIGHT ##

@@ -9,6 +9,10 @@ import storm.starter.bolt.*;
 import storm.starter.spout.TwitterSpout;
 import twitter4j.FilterQuery;
 
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 /**
  * Created with IntelliJ IDEA.
  * User: joning
@@ -26,7 +30,7 @@ public class TwitterFunTopology {
 
 
     public static void main(String[] args) throws Exception {
-
+        LogManager.getLogManager().getLogger(Logger.GLOBAL_LOGGER_NAME).setLevel(Level.INFO);
         /**************** SETUP ****************/
         String remoteClusterTopologyName = null;
         if (args!=null) {
@@ -59,14 +63,14 @@ public class TwitterFunTopology {
 
         builder.setBolt("sentiment", new SentimentBolt(), 4).shuffleGrouping("language-detection");
         builder.setBolt("avg-sentiment", new AverageWindowBolt("sentiment-value"), 4).shuffleGrouping("sentiment");
-        builder.setBolt("avg-sentiment-print", new PrinterBolt("AVG SENTIMENT")).shuffleGrouping("avg-sentiment");
+        builder.setBolt("avg-sentiment-print", new FileWriterBolt("AVG SENTIMENT")).shuffleGrouping("avg-sentiment");
 
         builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("sentiment");
         builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
         builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields(
                 "obj"));
         builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
-        builder.setBolt("hashtag-ranking-print", new PrinterBolt("HASHTAG_RANKING")).shuffleGrouping("hashtag-total-ranking");
+        builder.setBolt("hashtag-ranking-print", new FileWriterBolt("HASHTAG_RANKING")).shuffleGrouping("hashtag-total-ranking");
 
 
  /*       builder.setBolt("feeds", new FeedEntityExtractionBolt(), 4).shuffleGrouping("spout");
@@ -79,7 +83,7 @@ public class TwitterFunTopology {
 
 
         Config conf = new Config();
-        conf.setDebug(true);
+        conf.setDebug(false);
 
 
         if (remoteClusterTopologyName!=null) {

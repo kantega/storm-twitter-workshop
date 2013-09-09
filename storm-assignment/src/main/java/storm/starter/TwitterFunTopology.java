@@ -4,6 +4,7 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
+import storm.starter.bolt.FileWriterBolt;
 import storm.starter.bolt.PrinterBolt;
 import storm.starter.spout.TwitterSpout;
 import twitter4j.FilterQuery;
@@ -45,19 +46,19 @@ public class TwitterFunTopology {
 
         FilterQuery tweetFilterQuery = new FilterQuery();
         // TODO: Define your own twitter query
-        //tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
+        // tweetFilterQuery.track(new String[]{"Bieber", "Teletubbies"});
+        // See https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j
 
 
         TwitterSpout spout = new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenKey, tweetFilterQuery);
-
         //TODO: Set the twitter spout as spout on this topology. Hint: Use the builder object.
 
-        PrinterBolt printerBolt = new PrinterBolt("TWEET! ");
-        //TODO: Route messages from the spout to the printer bolt. Hint: Again, use the builder object.
+        FileWriterBolt fileWriterBolt = new FileWriterBolt("MyTweets.txt");
+        //TODO: Route messages from the spout to the file writer bolt. Hint: Again, use the builder object.
 
 
         Config conf = new Config();
-        conf.setDebug(true);
+        conf.setDebug(false);
 
 
         if (remoteClusterTopologyName!=null) {
