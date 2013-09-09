@@ -45,6 +45,7 @@ public class FileWriterBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple tuple) {
         writer.println((count++)+":"+tuple);
+        writer.flush();
         // Confirm that this tuple has been treated.
         _collector.ack(tuple);
 

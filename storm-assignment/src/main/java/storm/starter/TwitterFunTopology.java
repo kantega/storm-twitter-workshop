@@ -21,7 +21,7 @@ public class TwitterFunTopology {
     private static String consumerKey = "FILL IN HERE";
     private static String consumerSecret = "FILL IN HERE";
     private static String accessToken = "FILL IN HERE";
-    private static String accessTokenKey = "FILL IN HERE";
+    private static String accessTokenSecret = "FILL IN HERE";
 
 
     public static void main(String[] args) throws Exception {
@@ -36,7 +36,7 @@ public class TwitterFunTopology {
                 consumerKey =args[0];
                 consumerSecret =args[1];
                 accessToken =args[2];
-                accessTokenKey =args[3];
+                accessTokenSecret =args[3];
             }
 
         }
@@ -46,11 +46,11 @@ public class TwitterFunTopology {
 
         FilterQuery tweetFilterQuery = new FilterQuery();
         // TODO: Define your own twitter query
-        // tweetFilterQuery.track(new String[]{"Bieber", "Teletubbies"});
+        // tweetFilterQuery.track(new String[]{"Music"});
         // See https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j
 
 
-        TwitterSpout spout = new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenKey, tweetFilterQuery);
+        TwitterSpout spout = new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, tweetFilterQuery);
         //TODO: Set the twitter spout as spout on this topology. Hint: Use the builder object.
 
         FileWriterBolt fileWriterBolt = new FileWriterBolt("MyTweets.txt");

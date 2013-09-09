@@ -17,8 +17,7 @@ public class PrinterBolt extends BaseBasicBolt {
     @Override
   public void execute(Tuple tuple, BasicOutputCollector collector) {
 
-        //TODO print out the tuple
-        System.err.println();
+        System.err.println(prefix +": "+tuple);
 
         //This bolt does not emit any values further, only print object values to the console
   }

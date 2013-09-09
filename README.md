@@ -35,8 +35,11 @@
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). Run your  twe
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). Run the main method in TwitterFunTopology.java.
 2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
+TODO: VIS EN EKSEMPEL TOPOLOGI
+TODO: Forklar boundingbox for location queries.
+
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
@@ -44,6 +47,7 @@ Goal: Build a topology that extracts and prints the hashtags from Norwegian twee
 Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature is not yet implementet by Twitter4j.  
 Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j).
 Bonus task: How to eliminate Swedish tweets? Hint make use of the language detection bolt.
+
 
 ## STEP FOUR ##
 ### Storm: Count the popularity of hashtags
@@ -58,9 +62,12 @@ New concept:
 Goal: Show what people are discussing right now. Print a top 10 of the most popular hashtags to a FileWriterBolt.
 Problem: How do we create such ranking if we do not store every event or hashtag?
 Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and the TotalRankingsBolt.
+We will route tuples from HashtagExtractionBolt --> RollingCountBolt --> IntermediateRankingsBolt --> TotalRankingsBolt --> FileWriterBolt
 Information about how these bolts work: http://www.michael-noll.com/blog/2013/01/18/implementing-real-time-trending-topics-in-storm/
 New concept:
     Tick tuples - When we require a bolt to “do something” at a fixed interval
+    GlobalGrouping - Vi skal ha en TotalRankingsBolt-worker og data fra IntermediateRankingsBolt til TotalRankingsBolt rutes med globalGrouping
+
 
 
 ## STEP SIX ##

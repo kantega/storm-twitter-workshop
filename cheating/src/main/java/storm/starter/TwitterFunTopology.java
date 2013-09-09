@@ -27,7 +27,7 @@ public class TwitterFunTopology {
     private static String consumerKey = "FILL IN HERE";
     private static String consumerSecret = "FILL IN HERE";
     private static String accessToken = "FILL IN HERE";
-    private static String accessTokenKey = "FILL IN HERE";
+    private static String accessTokenSecret = "FILL IN HERE";
 
 
     public static void main(String[] args) throws Exception {
@@ -43,7 +43,7 @@ public class TwitterFunTopology {
                 consumerKey =args[0];
                 consumerSecret =args[1];
                 accessToken =args[2];
-                accessTokenKey =args[3];
+                accessTokenSecret =args[3];
             }
 
         }
@@ -65,7 +65,7 @@ public class TwitterFunTopology {
         // Filter on hashtags
         tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
 
-        builder.setSpout("spout", new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenKey, tweetFilterQuery), 1);
+        builder.setSpout("spout", new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenSecret, tweetFilterQuery), 1);
         builder.setBolt("file-writer", new FileWriterBolt("tweets.txt"), 1).shuffleGrouping("spout");
 
         builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");

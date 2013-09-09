@@ -37,7 +37,11 @@ public class HashtagExtractionBolt extends BaseRichBolt {
         System.out.println("---- Split by space ------");
         while (st.hasMoreElements()) {
 
-            //TODO emit hashtags
+            String term = (String) st.nextElement();
+            if (StringUtils.startsWith(term, "#")){
+                String hashtag = term;
+                //TODO emit hashtag
+            }
 
         }
 
