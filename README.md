@@ -9,8 +9,9 @@
 1. git clone https://github.com/kantega/storm-twitter-workshop
 
 ### For Eclipse-users only
-1. Create Eclipse projects by running the "mvn eclipse:eclipse" command from the project root ("storm-twitter-workshop")
-2. Import these projects into Eclipse.
+1. Create Eclipse projects by running the `mvn eclipse:eclipse` command from the project root ("storm-twitter-workshop")
+2. Run `mvn -Declipse.workspace="your Eclipse Workspace" eclipse:configure-workspace` and open this workspace from Eclipse
+2. Import the storm-assignment project into Eclipse.
 
 ### Twitter Developer: Create keys and tokens
 1. Go to [Twitter developer site](https://dev.twitter.com) and log in. Create new account if you do not already have one
@@ -29,13 +30,13 @@
         cd cheating   
         mvn compile exec:java -Dexec.classpathScope=compile -Dexec.mainClass=storm.starter.TwitterFunTopology
         
-9. You should now get continuous output and no errors
+9. You should now start getting continuous output for 10 seconds. After this a file tweet.txt should have been generated that contains some twitter messages. If this file is empty, look at console output. 
 
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based)
-2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). Run your  twe
+2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags

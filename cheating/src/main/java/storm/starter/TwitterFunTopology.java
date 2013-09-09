@@ -5,6 +5,7 @@ import backtype.storm.LocalCluster;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
+import backtype.storm.utils.Utils;
 import storm.starter.bolt.*;
 import storm.starter.spout.TwitterSpout;
 import twitter4j.FilterQuery;
@@ -48,7 +49,13 @@ public class TwitterFunTopology {
         }
         /****************       ****************/
 
+
+
+
+
         TopologyBuilder builder = new TopologyBuilder();
+
+        // Read
 
         FilterQuery tweetFilterQuery = new FilterQuery();
         // Filter close to Norway
@@ -58,19 +65,20 @@ public class TwitterFunTopology {
         // Filter on hashtags
         tweetFilterQuery.track(new String[]{"#valg13", "#valg2013", "#nyregjering"});
 
-        builder.setSpout("spout", new TwitterSpout(consumerKey,consumerSecret, accessToken, accessTokenKey,tweetFilterQuery), 1);
-        builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
+        builder.setSpout("spout", new TwitterSpout(consumerKey, consumerSecret, accessToken, accessTokenKey, tweetFilterQuery), 1);
+        builder.setBolt("file-writer", new FileWriterBolt("tweets.txt"), 1).shuffleGrouping("spout");
 
+        builder.setBolt("language-detection", new LanguageDetectionBolt(), 4).shuffleGrouping("spout");
         builder.setBolt("sentiment", new SentimentBolt(), 4).shuffleGrouping("language-detection");
         builder.setBolt("avg-sentiment", new AverageWindowBolt("sentiment-value"), 4).shuffleGrouping("sentiment");
-        builder.setBolt("avg-sentiment-print", new FileWriterBolt("AVG SENTIMENT")).shuffleGrouping("avg-sentiment");
+        builder.setBolt("avg-sentiment-print", new FileWriterBolt("AVG SENTIMENT.txt")).shuffleGrouping("avg-sentiment");
 
         builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("sentiment");
         builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
         builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields(
                 "obj"));
         builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
-        builder.setBolt("hashtag-ranking-print", new FileWriterBolt("HASHTAG_RANKING")).shuffleGrouping("hashtag-total-ranking");
+        builder.setBolt("hashtag-ranking-print", new FileWriterBolt("HASHTAG_RANKING.txt")).shuffleGrouping("hashtag-total-ranking");
 
 
  /*       builder.setBolt("feeds", new FeedEntityExtractionBolt(), 4).shuffleGrouping("spout");
@@ -97,7 +105,7 @@ public class TwitterFunTopology {
             LocalCluster cluster = new LocalCluster();
             cluster.submitTopology("twitter-fun", conf, builder.createTopology());
 
-            Thread.sleep(460000);
+            Utils.sleep(10000);
 
             cluster.shutdown();
         }
