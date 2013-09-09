@@ -40,19 +40,17 @@ Now, you are ready for coding. To the below steps on the storm-assignment folder
 
 ## STEP TWO ##
 ### Storm: My first topology
-Goal: Print out tweets
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See our (Github wiki)[https://github.com/kantega/storm-twitter-workshop/wiki]. Run the main method in TwitterFunTopology.java.
-2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).
+Goal: Print out tweets  
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page. Run the main method in TwitterFunTopology.java.  
+2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
+NOTE: Do not create more than 1 TwitterSpout workers or else you may encounter Twitter API limits! 
 TODO: VIS EN EKSEMPEL TOPOLOGI
-TODO: Forklar boundingbox for location queries.
 
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
-Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt (HashtagExtractionBolt). (Replace the todo's with implementations).  Print the hashtags to a FileWriterBolt.
-Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature is not yet implementet by Twitter4j.  
-Still stuck? Take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j).
-Bonus task: How to eliminate Swedish tweets? Hint make use of the language detection bolt.
+Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt (HashtagExtractionBolt). (Replace the todo's with implementations).  Print the hashtags to a FileWriterBolt.  
+Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature is not yet implementet by Twitter4j. You can use the LanguageDetectionBolt to find the correct language, but it can give inaccurate results for a small language as Norwegain. You can use the location filter of FilterQuery get better accuracy. Again take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j).  
 
 
 ## STEP FOUR ##
