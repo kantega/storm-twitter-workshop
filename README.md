@@ -6,6 +6,7 @@
 
 ## General Info ##
 * The folder cheating contains the entire solution, while the folder storm-assignment is the working directory for this workshop.
+* Take a look at our [wiki](https://github.com/kantega/storm-twitter-workshop/wiki/Image-setup) for some guide, e.g. for the provided image file
 
 
 ## STEP ONE ##
