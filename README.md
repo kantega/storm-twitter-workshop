@@ -25,9 +25,9 @@
 4. Fill in the details. You can use dummy values for all required fields.
 5. In the application detail page note the **Consumer key** and **Consumer secret** fields under OAuth settings
 6. Create a new access token at the bottom of the page. The **Access token** and **Access token secret** will be shown after a moment.
-7. Add these tokens to BOTH
-* ` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
-* ` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
+7. Add these tokens to BOTH  
+ ` storm-assignment / src / main / java / storm / starter / TwitterFunTopology.java` and  
+ ` cheating / src / main / java / storm / starter / TwitterFunTopology.java`  
 **OR** send them as command line arguments through maven by adding the following in step 8
 ``` -Dexec.args="CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET" ```
 8. Test your credentials by running the main class in cheating
