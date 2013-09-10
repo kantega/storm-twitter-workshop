@@ -5,7 +5,6 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichBolt;
 import backtype.storm.tuple.Tuple;
-import storm.starter.spout.TwitterSpout;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -46,7 +45,7 @@ public class FileWriterBolt extends BaseRichBolt {
 
     @Override
     public void execute(Tuple tuple) {
-        writer.println((count++)+":"+tuple.getStringByField(TwitterSpout.MESSAGE));
+        writer.println((count++)+":"+tuple);
         writer.flush();
         // Confirm that this tuple has been treated.
         _collector.ack(tuple);
