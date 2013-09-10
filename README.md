@@ -70,7 +70,7 @@ Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and 
 We will route tuples from HashtagExtractionBolt --> RollingCountBolt --> IntermediateRankingsBolt --> TotalRankingsBolt --> FileWriterBolt
 Example of routing:
 ```java
-builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("sentiment");
+builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("YOUR BOLT ID");
 builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
 builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields("obj"));
 builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
