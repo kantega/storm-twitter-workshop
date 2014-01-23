@@ -78,7 +78,7 @@ builder.setBolt("hashtag-ranking-print", new FileWriterBolt("HASHTAG_RANKING.txt
 Information about how these bolts work: http://www.michael-noll.com/blog/2013/01/18/implementing-real-time-trending-topics-in-storm/
 New concept:
     Tick tuples - When we require a bolt to “do something” at a fixed interval
-    GlobalGrouping - Vi skal ha en TotalRankingsBolt-worker og data fra IntermediateRankingsBolt til TotalRankingsBolt rutes med globalGrouping
+    GlobalGrouping - We're using a TotalRankingsBolt-worker. Data from IntermediateRankingsBolt to TotalRankingsBolt is routed using globalGrouping
 
 
 
