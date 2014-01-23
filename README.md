@@ -42,14 +42,14 @@ Now, you are ready for coding. To the below steps on the storm-assignment folder
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets  
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See the provided TwitterSpout class and our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page for understanding how the tweets are fetched.  Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations). Run the main method in TwitterFunTopology.java.
+Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See the provided TwitterSpout class and our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page for understanding how the tweets are fetched.  Build a topology that uses your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations). Run the main method in TwitterFunTopology.java.
 NOTE: Do not create more than 1 TwitterSpout workers or else you may encounter Twitter API limits! 
 
 
 ## STEP THREE ##
 ### Storm: Extracting hashtags
 Goal: Build a topology that extracts and prints the hashtags from Norwegian tweets. We do this by introducing a new bolt (HashtagExtractionBolt). (Replace the todo's with implementations).  Print the hashtags to a FileWriterBolt.  
-Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature may not yet implementet by Twitter4j. You can use the LanguageDetectionBolt to find the correct language, but it can give inaccurate results for a small language as Norwegain. You can use the location filter of FilterQuery get better accuracy. Again take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j).  
+Hint: Take a look at [FilterQuery](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources), however, note that the language feature may not yet implementet by Twitter4j. You can use the LanguageDetectionBolt to find the correct language, but it can give inaccurate results for a small language as Norwegain. You can use the location filter of FilterQuery get better accuracy. Again take a look at [Basic Twitter stream reading using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j). Twitter4j documentation is poor, so it is recommended to use Twitters own documentation. In our [Twitter resource](https://github.com/kantega/storm-twitter-workshop/wiki/Twitter-API-and-Twitter4j-Streaming-Resources) we have listed relevant documentation from Twitter. Be sure to check that out!
 
 
 ## STEP FOUR ##
@@ -68,7 +68,7 @@ Hint: We do this by introducing two new bolts; the IntermediateRankingsBolt and 
 We will route tuples from HashtagExtractionBolt --> RollingCountBolt --> IntermediateRankingsBolt --> TotalRankingsBolt --> FileWriterBolt
 Example of routing:
 ```java
-builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("YOUR BOLT ID");
+builder.setBolt("hashtags", new HashtagExtractionBolt(), 4).shuffleGrouping("YOUR SPOUT ID");
 builder.setBolt("hashtag-counter", new RollingCountBolt(9, 3), 4).fieldsGrouping("hashtags", new Fields("entity"));
 builder.setBolt("hashtag-intermediate-ranking", new IntermediateRankingsBolt(100), 4).fieldsGrouping("hashtag-counter", new Fields("obj"));
 builder.setBolt("hashtag-total-ranking", new TotalRankingsBolt(100)).globalGrouping("hashtag-intermediate-ranking");
