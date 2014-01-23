@@ -42,8 +42,7 @@ Now, you are ready for coding. To the below steps on the storm-assignment folder
 ## STEP TWO ##
 ### Storm: My first topology
 Goal: Print out tweets  
-1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See the provided TwitterSpout class and our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page for understanding how the tweets are fetched. Run the main method in TwitterFunTopology.java. 
-2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
+1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See the provided TwitterSpout class and our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page for understanding how the tweets are fetched.  Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations). Run the main method in TwitterFunTopology.java.
 NOTE: Do not create more than 1 TwitterSpout workers or else you may encounter Twitter API limits! 
 
 
