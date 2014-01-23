@@ -45,7 +45,6 @@ Goal: Print out tweets
 1. Modify TwitterFunTopology.java: Define your Twitter query (location and topic based). See our [Reading tweet streams using Twitter4j](https://github.com/kantega/storm-twitter-workshop/wiki/Basic-Twitter-stream-reading-using-Twitter4j) wiki page. Run the main method in TwitterFunTopology.java.  
 2. Build a topology that use your twitter query and routes the twitter messages to the FileWriterBolt (Replace the todo's with implementations).  
 NOTE: Do not create more than 1 TwitterSpout workers or else you may encounter Twitter API limits! 
-TODO: VIS EN EKSEMPEL TOPOLOGI
 
 
 ## STEP THREE ##
